@@ -1,10 +1,12 @@
 package com.study.threadpoolexecutor;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.assertj.core.api.Assertions;
@@ -83,6 +85,12 @@ public class ThreadPoolExecutorTest {
 
         assertThat(threadPool.getPoolSize()).isEqualTo(3);
         assertThat(threadPool.getQueue().size()).isEqualTo(1);
+    }
+
+    @Test
+    @Order(5)
+    void throwRejectExecutionException() {
+        assertThrows(RejectedExecutionException.class, () -> threadPool.submit(sleepTask));
     }
 
 }
