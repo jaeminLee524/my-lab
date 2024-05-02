@@ -23,3 +23,7 @@ Tstock-concurrency/src/main/java/com/study/stockconcurrency/service/StockService
 Zstock-concurrency/src/main/java/com/study/stockconcurrency/repository/StockRepository.java,8/9/89001d993ab2dd187e6c3a944b23f7345c8bf9b2
 à
 Xstock-concurrency/src/test/java/com/study/stockconcurrency/service/StockServiceTest.java,7/7/7782e90f7c0d04e4f1b72b0a25d56d4057e41f45
+ê
+`stock-concurrency/src/main/java/com/study/stockconcurrency/service/SynchronizedStockService.java,8/0/80ec18ab7c5480eafc8ab6eb4853c434cab558ca
+î
+dstock-concurrency/src/test/java/com/study/stockconcurrency/service/SynchronizedStockServiceTest.java,6/a/6a56543b19025f958f241d2d482b76009f03b83f
