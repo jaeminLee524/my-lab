@@ -27,3 +27,13 @@ Xstock-concurrency/src/test/java/com/study/stockconcurrency/service/StockService
 `stock-concurrency/src/main/java/com/study/stockconcurrency/service/SynchronizedStockService.java,8/0/80ec18ab7c5480eafc8ab6eb4853c434cab558ca
 ”
 dstock-concurrency/src/test/java/com/study/stockconcurrency/service/SynchronizedStockServiceTest.java,6/a/6a56543b19025f958f241d2d482b76009f03b83f
+ˆ
+Xstock-concurrency/src/main/java/com/study/stockconcurrency/entity/Pessimistic_Stock.java,5/3/531e78b18ea4e00a55e006ae97ec12abf0c6804d
+‡
+Wstock-concurrency/src/main/java/com/study/stockconcurrency/entity/PessimisticStock.java,a/8/a8af4bc5390f5c1dfba10381dc04ca1f5bfec7b2
+Ž
+^stock-concurrency/src/main/java/com/study/stockconcurrency/service/PessimisticLockService.java,4/7/479c6efbef58bfde0b6b8d153fc0698822c1047a
+•
+estock-concurrency/src/main/java/com/study/stockconcurrency/repository/PessimisticStockRepository.java,5/2/528d72551e4ba97f16fecef67090107d5d313443
+’
+bstock-concurrency/src/test/java/com/study/stockconcurrency/service/PessimisticLockServiceTest.java,7/d/7dc3dfd5ac04aac2adac63ae17fa6b81157f97ff

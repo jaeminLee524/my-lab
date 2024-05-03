@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/my-lab.iml" filepath="$PROJECT_DIR$/my-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stock-concurrency.main.iml" filepath="$PROJECT_DIR$/.idea/modules/stock-concurrency.main.iml" />
     </modules>
   </component>
 </project>
