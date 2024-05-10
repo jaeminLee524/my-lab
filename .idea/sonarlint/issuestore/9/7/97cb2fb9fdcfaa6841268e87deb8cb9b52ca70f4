@@ -1,13 +1,0 @@
-
-O
-java:S2699("-Add at least one assertion to this test case.(à›·Æÿÿÿÿÿ8ĞÍÖ¥ğ1
-;
-java:S5786"Remove this 'public' modifier.(óíŒÀ8ĞÍÖ¥ğ1
-F
-java:S2925!"$Remove this use of "Thread.sleep()".(»ãßºøÿÿÿÿ8ÑÍÖ¥ğ1
-K
-java:S5838<")Use assertThat(actual).isEmpty() instead.(Öúìşÿÿÿÿ8ÑÍÖ¥ğ1
-K
-java:S5838E")Use assertThat(actual).isEmpty() instead.(Öúìşÿÿÿÿ8ÒÍÖ¥ğ1
-S
-java:S5838W"1Use assertThat(actual).hasSize(expected) instead.(¶İŒçÿÿÿÿÿ8ÒÍÖ¥ğ1
