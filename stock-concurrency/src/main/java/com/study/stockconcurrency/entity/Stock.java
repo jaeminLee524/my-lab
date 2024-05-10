@@ -27,7 +27,7 @@ public class Stock {
     }
 
     public void decreaseStock(Long quantity) {
-        if (this.quantity < quantity) {
+        if (this.quantity - quantity < 0) {
             throw new IllegalArgumentException("재고가 부족합니다.");
         }
 
