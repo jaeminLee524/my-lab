@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OptimisticStock {
+public class NamedStock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +23,7 @@ public class OptimisticStock {
     private Long productId;
     private Long quantity;
 
-    @Version
-    private Long version;
-
-    public OptimisticStock(Long productId, Long quantity) {
+    public NamedStock(Long productId, Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }

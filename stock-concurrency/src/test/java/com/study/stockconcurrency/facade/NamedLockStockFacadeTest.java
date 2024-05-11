@@ -1,10 +1,10 @@
-package com.study.stockconcurrency.service;
+package com.study.stockconcurrency.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.study.stockconcurrency.entity.OptimisticStock;
-import com.study.stockconcurrency.facade.OptimisticLockStockFacade;
-import com.study.stockconcurrency.repository.OptimisticStockRepository;
+import com.study.stockconcurrency.entity.NamedStock;
+import com.study.stockconcurrency.repository.NamedLockStockRepository;
+import com.study.stockconcurrency.service.NamedLockStockService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,28 +16,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OptimisticLockServiceTest {
+class NamedLockStockFacadeTest {
 
     @Autowired
-    private OptimisticLockStockFacade optimisticLockStockFacade;
+    private NamedLockStockService namedLockStockService;
 
     @Autowired
-    private OptimisticStockRepository optimisticStockRepository;
+    private NamedLockStockRepository namedLockStockRepository;
 
     @BeforeEach
     void setUp() {
-        OptimisticStock stock = new OptimisticStock(1L, 100L);
-        optimisticStockRepository.saveAndFlush(stock);
+        NamedStock namedStock = new NamedStock(1L, 100L);
+        namedLockStockRepository.saveAndFlush(namedStock);
     }
 
     @AfterEach
     void tearDown() {
-        optimisticStockRepository.deleteAllInBatch();
+        namedLockStockRepository.deleteAllInBatch();
     }
 
+    @DisplayName("네임드 락(Named lock)을 사용해서 동시성을 제어한다.")
     @Test
-    @DisplayName("낙관적 락(Optimistic lock)을 사용해서 동시성을 제어한다.")
-    void concurrency_with_optimistic_lock() throws InterruptedException {
+    void concurrency_with_named_lock() throws InterruptedException {
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
@@ -45,9 +45,7 @@ class OptimisticLockServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                     optimisticLockStockFacade.decreaseStock(1L, 1L);
-                } catch (InterruptedException e) {
-                    System.out.println("InterruptedException");
+                    namedLockStockService.decreaseStock(1L, 1L);
                 } finally {
                     countDownLatch.countDown();
                 }
@@ -55,7 +53,8 @@ class OptimisticLockServiceTest {
         }
 
         countDownLatch.await();
-        OptimisticStock stock = optimisticStockRepository.findById(1L).orElseThrow();
+
+        NamedStock stock = namedLockStockRepository.findById(1L).orElseThrow();
         assertThat(stock.getQuantity()).isEqualTo(0L);
     }
 }
