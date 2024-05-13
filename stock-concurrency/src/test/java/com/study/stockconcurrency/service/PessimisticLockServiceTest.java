@@ -55,7 +55,7 @@ class PessimisticLockServiceTest {
         countDownLatch.await();
 
         // when
-        PessimisticStock stock = pessimisticStockRepository.find(1L).orElseThrow();
+        PessimisticStock stock = pessimisticStockRepository.findById(1L).orElseThrow();
 
         // then
         assertThat(stock.getQuantity()).isEqualTo(0L);
