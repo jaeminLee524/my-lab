@@ -1,7 +1,6 @@
 package com.study.bucket4jspringboot.config;
 
 import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
 import io.github.bucket4j.BucketConfiguration;
 import java.time.Duration;
 import java.time.LocalDateTime;
