@@ -1,4 +1,4 @@
-package com.study.bucket4jspringboot.config;
+package com.study.service;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
-class APIRateLimiterRateLimiterController {
+class RateLimiterServiceTest {
 
     @Autowired
-    private APIRateLimiter apiRateLimiter;
+    private RateLimiterService rateLimiterService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -29,7 +29,7 @@ class APIRateLimiterRateLimiterController {
         String ipKey = "127.0.0.1";
 
         // when
-        boolean result = apiRateLimiter.tryConsume(ipKey);
+        boolean result = rateLimiterService.tryConsume(ipKey);
 
         // then
         Assertions.assertThat(result).isTrue();

@@ -1,7 +1,7 @@
 package com.study.bucket4jspringboot.aop;
 
-import com.study.bucket4jspringboot.config.APIRateLimiter;
 import com.study.bucket4jspringboot.exception.RateLimiterException;
+import com.study.service.RateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,12 +16,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class RateLimitAspect {
 
-    private final APIRateLimiter apiRateLimiter;
+    private final RateLimiterService rateLimiterService;
 
     @Around("@annotation(com.study.bucket4jspringboot.annotation.RateLimit)")
     public Object checkRateLimit(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        if (apiRateLimiter.tryConsume(httpServletRequest.getRemoteAddr()) ) {
+        if (rateLimiterService.tryConsume(httpServletRequest.getRemoteAddr()) ) {
             return joinPoint.proceed();
         } else {
             throw new RateLimiterException(RateLimiterException.TOO_MANY_REQUEST);
