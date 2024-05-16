@@ -1,17 +1,18 @@
-package com.study.bucket4jspringboot.config;
+package com.study.service;
 
+import com.study.bucket4jspringboot.config.RateLimiterConfig;
 import io.github.bucket4j.Bucket;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
-public class APIRateLimiter {
+@Service
+public class RateLimiterService {
 
     private final RateLimiterConfig rateLimiterConfig;
     private final ConcurrentMap<String, Bucket> buckets = new ConcurrentHashMap<>();

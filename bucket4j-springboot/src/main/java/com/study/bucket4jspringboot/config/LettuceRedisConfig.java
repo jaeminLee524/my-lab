@@ -33,7 +33,7 @@ public class LettuceRedisConfig {
         return redisTemplate;
     }
 
-    @Bean
+    @Bean(name = "lettuceRedisClient")
     public RedisClient redisClient() {
         return RedisClient.create(PREFIX + HOST + ":" + POST);
     }
