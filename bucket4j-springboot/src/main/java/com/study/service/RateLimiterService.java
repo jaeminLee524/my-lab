@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class RateLimiterService {
 
     private final RateLimiterConfig rateLimiterConfig;
-    private final ConcurrentMap<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     public boolean tryConsume(String remoteAddrKey) {
         Bucket bucket = getOrCreateBucket(remoteAddrKey);
@@ -32,11 +31,8 @@ public class RateLimiterService {
     }
 
     private Bucket getOrCreateBucket(String apiKey) {
-        return buckets.computeIfAbsent(apiKey, this::newBucket);
-    }
-
-    private Bucket newBucket(String apiKey) {
-        return rateLimiterConfig.initBucket(apiKey);
+        return rateLimiterConfig.lettuceBasedProxyManager().builder()
+            .build(apiKey, () -> rateLimiterConfig.bucketConfiguration());
     }
 
     private ConsumptionProbe consumeToken(Bucket bucket) {
