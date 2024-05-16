@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: bucket4j-springboot
+
+server:
+  port: 9090
