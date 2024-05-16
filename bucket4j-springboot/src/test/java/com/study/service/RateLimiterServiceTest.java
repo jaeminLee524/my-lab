@@ -42,23 +42,23 @@ class RateLimiterServiceTest {
     @Test
     void return_remain_token() {
         // given
-        String key = "127.0.0.2";
+        String key = "127.0.0.1";
 
         // when
         long remainToken = rateLimiterService.getRemainToken(key);
 
         // then
-        Assertions.assertThat(remainToken).isEqualTo(3);
+        Assertions.assertThat(remainToken).isEqualTo(20);
     }
 
     @DisplayName("처리율 제한에 걸리면 예외를 발생시킨다.")
     @Test
     void throw_exception_if_rate_limit() {
         // given
-        String key = "127.0.0.3";
+        String key = "127.0.0.1";
 
         // when
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             rateLimiterService.tryConsume(key);
         }
 
