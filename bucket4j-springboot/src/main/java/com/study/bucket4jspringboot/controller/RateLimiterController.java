@@ -1,6 +1,6 @@
-package com.study.controller;
+package com.study.bucket4jspringboot.controller;
 
-import com.study.service.RateLimiterApiService;
+import com.study.bucket4jspringboot.service.RateLimiterApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

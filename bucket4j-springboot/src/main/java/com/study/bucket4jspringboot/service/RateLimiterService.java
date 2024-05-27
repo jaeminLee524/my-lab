@@ -1,4 +1,4 @@
-package com.study.service;
+package com.study.bucket4jspringboot.service;
 
 import com.study.bucket4jspringboot.config.RateLimiterConfig;
 import com.study.bucket4jspringboot.exception.RateLimiterException;
