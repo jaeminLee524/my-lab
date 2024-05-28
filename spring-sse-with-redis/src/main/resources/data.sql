@@ -1,0 +1,1 @@
+INSERT INTO raffle(name) VALUES("Maison Margiela Leather")

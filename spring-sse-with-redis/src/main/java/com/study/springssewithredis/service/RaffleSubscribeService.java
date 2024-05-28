@@ -3,6 +3,7 @@ package com.study.springssewithredis.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.springssewithredis.domain.Raffle;
 import com.study.springssewithredis.infrastructure.ParticipationRepository;
+import com.study.springssewithredis.service.dto.RaffleDto.RaffleParticipationRequest;
 import com.study.springssewithredis.service.dto.RaffleDto.RaffleResponse;
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +24,7 @@ public class RaffleSubscribeService {
 
     private static final long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private static final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    public static final String RAFFLE_EVENT_NAME = "raffle-winning-probability";
     private final ObjectMapper objectMapper;
     private final ParticipationRepository participationRepository;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
@@ -34,7 +36,7 @@ public class RaffleSubscribeService {
         emitter.send(
             SseEmitter.event()
                 .id(id)
-                .name("sse")
+                .name(RAFFLE_EVENT_NAME)
         );
         emitters.add(emitter);
 
@@ -53,9 +55,11 @@ public class RaffleSubscribeService {
 
     private RaffleResponse convertFrom(Message message) {
         try {
-            final Raffle raffle = this.objectMapper.readValue(message.getBody(), Raffle.class);
+            final RaffleParticipationRequest raffle = this.objectMapper.readValue(message.getBody(), RaffleParticipationRequest.class);
 
-            final Long participationCount = participationRepository.countParticipationByRaffleId(raffle.getId());
+            final Long participationCount = participationRepository.countParticipationByRaffleId(raffle.getRaffleId());
+
+            log.info("deserialize message: {}, participationCount: {}", raffle, participationCount);
 
             return RaffleResponse.from(raffle, participationCount);
         } catch (IOException e) {
@@ -67,16 +71,12 @@ public class RaffleSubscribeService {
         try {
             emitter.send(SseEmitter.event()
                 .id(id)
-                .name("sse")
+                .name(RAFFLE_EVENT_NAME)
                 .data(data));
         } catch (IOException e) {
             emitters.remove(emitter);
             log.error("SSE 연결이 올바르지 않습니다. 해당 raffleID={}", id);
         }
-    }
-
-    private String getChannelName(String raffleId) {
-        return "sample:topics:" + raffleId;
     }
 
     private void handleEmitterCompletionAndTimeout(final SseEmitter emitter, final MessageListener messageListener) {

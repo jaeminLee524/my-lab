@@ -1,3 +1,6 @@
+server:
+  port: 9998
+
 spring:
   application:
     name: spring-sse-with-redis
@@ -15,5 +18,12 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000
-        dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
+    defer-datasource-initialization: true # ddl-auto 먼저 실행되고 data.sql 파일 실행
+
+  sql:
+    init:
+      platform: mysql
+      data-locations: classpath:/data.sql
+      mode: always
+

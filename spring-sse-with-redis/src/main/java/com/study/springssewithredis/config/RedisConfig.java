@@ -1,5 +1,6 @@
 package com.study.springssewithredis.config;
 
+import com.study.springssewithredis.service.dto.RaffleDto.RaffleParticipationRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,13 +23,13 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisOperations<String, Object> redisOperations(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    public RedisOperations<String, RaffleParticipationRequest> redisOperationsForRaffle(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, RaffleParticipationRequest> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(RedisSerializer.string());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Object.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(RaffleParticipationRequest.class));
         redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer(Object.class));
+        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer(RaffleParticipationRequest.class));
 
         return redisTemplate;
     }

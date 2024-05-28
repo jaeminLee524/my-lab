@@ -16,14 +16,37 @@ public class RaffleDto {
     @ToString
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RaffleParticipationRequest {
+
+        private Long raffleId;
+        private String raffleName;
+        private Long memberId;
+
+        public static RaffleParticipationRequest of(Raffle raffle, Long memberId) {
+            return RaffleParticipationRequest.builder()
+                .raffleId(raffle.getId())
+                .raffleName(raffle.getName())
+                .memberId(memberId)
+                .build();
+        }
+    }
+
+
+    @Getter
+    @Builder
+    @ToString
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class RaffleResponse {
 
-        private Long id;
+        private Long raffleId;
+        private String raffleName;
         private Double winnerProbability;
 
-        public static RaffleResponse from(Raffle raffle, Long participationCount) {
+        public static RaffleResponse from(RaffleParticipationRequest raffle, Long participationCount) {
             return RaffleResponse.builder()
-                .id(raffle.getId())
+                .raffleId(raffle.getRaffleId())
+                .raffleName(raffle.getRaffleName())
                 .winnerProbability((double) 1 / participationCount * 100)
                 .build();
         }

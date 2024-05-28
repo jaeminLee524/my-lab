@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
 
-    @Query("SELECT COUNT(r) FROM Participation r WHERE r.id = :raffleId")
+    @Query("SELECT COUNT(r) FROM Participation r WHERE r.raffleId = :raffleId")
     Long countParticipationByRaffleId(Long raffleId);
 }

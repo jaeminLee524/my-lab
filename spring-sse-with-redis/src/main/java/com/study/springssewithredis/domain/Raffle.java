@@ -21,10 +21,5 @@ public class Raffle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_id")
-    private Long memberId;
-
-    @OneToMany
-    @JoinColumn(name = "raffle_id")
-    private List<Member> members;
+    private String name;
 }

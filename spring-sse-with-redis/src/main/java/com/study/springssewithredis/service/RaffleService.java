@@ -4,6 +4,7 @@ import com.study.springssewithredis.domain.Participation;
 import com.study.springssewithredis.domain.Raffle;
 import com.study.springssewithredis.infrastructure.ParticipationRepository;
 import com.study.springssewithredis.infrastructure.RaffleRepository;
+import com.study.springssewithredis.service.dto.RaffleDto.RaffleParticipationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisOperations;
@@ -16,7 +17,7 @@ public class RaffleService {
 
     private final RaffleRepository raffleRepository;
     private final ParticipationRepository participationRepository;
-    private final RedisOperations<String, Raffle> raffleRedisOperations;
+    private final RedisOperations<String, RaffleParticipationRequest> redisOperations;
 
     /**
      * 래플 참여
@@ -34,6 +35,9 @@ public class RaffleService {
             .memberId(memberId)
             .build());
 
-        raffleRedisOperations.convertAndSend(RaffleChannelGenerator.getChannelName(String.valueOf(raffle.getId())), raffle);
+        redisOperations.convertAndSend(
+            RaffleChannelGenerator.getChannelName(String.valueOf(raffle.getId())),
+            RaffleParticipationRequest.of(raffle, memberId)
+        );
     }
 }
