@@ -75,16 +75,6 @@ public class RaffleSubscribeService {
         return messageListener;
     }
 
-    /**
-     * 메시지 리스너를 컨테이너에 추가합니다.
-     *
-     * @param messageListener
-     * @param id
-     */
-    private void addMessageListenerToContainer(MessageListener messageListener, String id) {
-        this.redisMessageListenerContainer.addMessageListener(messageListener, ChannelTopic.of(RaffleChannelGenerator.getChannelName(id)));
-    }
-
     private RaffleResponse convertFrom(Message message) {
         try {
             final RaffleParticipationRequest raffle = this.objectMapper.readValue(message.getBody(), RaffleParticipationRequest.class);
@@ -107,6 +97,16 @@ public class RaffleSubscribeService {
             emitters.remove(emitter);
             log.error("SSE 연결이 올바르지 않습니다. 해당 raffleID={}", id);
         }
+    }
+
+    /**
+     * 메시지 리스너를 컨테이너에 추가합니다.
+     *
+     * @param messageListener
+     * @param id
+     */
+    private void addMessageListenerToContainer(MessageListener messageListener, String id) {
+        this.redisMessageListenerContainer.addMessageListener(messageListener, ChannelTopic.of(RaffleChannelGenerator.getChannelName(id)));
     }
 
     private void handleEmitterCompletionAndTimeout(final SseEmitter emitter, final MessageListener messageListener) {
