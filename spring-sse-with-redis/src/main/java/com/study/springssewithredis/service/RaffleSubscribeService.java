@@ -1,7 +1,6 @@
 package com.study.springssewithredis.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.springssewithredis.domain.Raffle;
 import com.study.springssewithredis.infrastructure.ParticipationRepository;
 import com.study.springssewithredis.service.dto.RaffleDto.RaffleParticipationRequest;
 import com.study.springssewithredis.service.dto.RaffleDto.RaffleResponse;
@@ -31,6 +30,24 @@ public class RaffleSubscribeService {
 
     public SseEmitter subscribe(final Long raffleId) throws IOException {
         final String id = String.valueOf(raffleId);
+        final SseEmitter emitter = createSseEmitter(id);
+        final MessageListener messageListener = createMessageListener(emitter, id);
+
+        addMessageListenerToContainer(messageListener, id);
+
+        handleEmitterCompletionAndTimeout(emitter, messageListener);
+
+        return emitter;
+    }
+
+    /**
+     * SSE 연결을 생성합니다.
+     *
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    private SseEmitter createSseEmitter(String id) throws IOException {
         final SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
 
         emitter.send(
@@ -39,18 +56,33 @@ public class RaffleSubscribeService {
                 .name(RAFFLE_EVENT_NAME)
         );
         emitters.add(emitter);
+        return emitter;
+    }
 
+    /**
+     * redis 메시지 리스너를 생성합니다.
+     *
+     * @param emitter
+     * @param id
+     * @return
+     */
+    private MessageListener createMessageListener(SseEmitter emitter, String id) {
         final MessageListener messageListener = (message, pattern) -> {
             RaffleResponse raffleResponse = convertFrom(message);
 
             sendToClient(emitter, id, raffleResponse);
         };
+        return messageListener;
+    }
 
+    /**
+     * 메시지 리스너를 컨테이너에 추가합니다.
+     *
+     * @param messageListener
+     * @param id
+     */
+    private void addMessageListenerToContainer(MessageListener messageListener, String id) {
         this.redisMessageListenerContainer.addMessageListener(messageListener, ChannelTopic.of(RaffleChannelGenerator.getChannelName(id)));
-
-        handleEmitterCompletionAndTimeout(emitter, messageListener);
-
-        return emitter;
     }
 
     private RaffleResponse convertFrom(Message message) {
@@ -58,8 +90,6 @@ public class RaffleSubscribeService {
             final RaffleParticipationRequest raffle = this.objectMapper.readValue(message.getBody(), RaffleParticipationRequest.class);
 
             final Long participationCount = participationRepository.countParticipationByRaffleId(raffle.getRaffleId());
-
-            log.info("deserialize message: {}, participationCount: {}", raffle, participationCount);
 
             return RaffleResponse.from(raffle, participationCount);
         } catch (IOException e) {
