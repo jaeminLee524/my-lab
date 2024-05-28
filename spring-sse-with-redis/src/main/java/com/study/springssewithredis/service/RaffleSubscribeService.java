@@ -31,7 +31,7 @@ public class RaffleSubscribeService {
     public SseEmitter subscribe(final Long raffleId) throws IOException {
         final String id = String.valueOf(raffleId);
         final SseEmitter emitter = createSseEmitter(id);
-        final MessageListener messageListener = createMessageListener(emitter, id);
+        final MessageListener messageListener = createMessageListenerAndSendToClient(emitter, id);
 
         addMessageListenerToContainer(messageListener, id);
 
@@ -66,7 +66,7 @@ public class RaffleSubscribeService {
      * @param id
      * @return
      */
-    private MessageListener createMessageListener(SseEmitter emitter, String id) {
+    private MessageListener createMessageListenerAndSendToClient(SseEmitter emitter, String id) {
         final MessageListener messageListener = (message, pattern) -> {
             RaffleResponse raffleResponse = convertFrom(message);
 
