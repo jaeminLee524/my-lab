@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 public class RaffleSubscribeService {
 
-    private static final long DEFAULT_TIMEOUT = 60L * 1000 * 60;
+    private static final long DEFAULT_TIMEOUT = 60L * 1000 * 10;
     private static final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
     public static final String RAFFLE_EVENT_NAME = "raffle-winning-probability";
     private final ObjectMapper objectMapper;
@@ -50,9 +50,11 @@ public class RaffleSubscribeService {
     private SseEmitter createSseEmitter(String id) throws IOException {
         final SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
 
+        String uniqueId = id + "_" + System.currentTimeMillis();
+
         emitter.send(
             SseEmitter.event()
-                .id(id)
+                .id(uniqueId)
                 .name(RAFFLE_EVENT_NAME)
         );
         emitters.add(emitter);
